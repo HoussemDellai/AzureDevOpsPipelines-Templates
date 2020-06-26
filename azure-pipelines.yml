@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
@@ -15,22 +10,17 @@ stages:
     backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
     backendAzureRmStorageAccountName: 'terraformtfstateskip'
     backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'test123.tfstate'
+    backendAzureRmKey: 'staging.tfstate'
 
 - template: terraform-stages-template.yml
   parameters:
     environment: qa
     environmentDisplayName: QA
+    backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+    backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+    backendAzureRmStorageAccountName: 'terraformtfstateskip'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'qa.tfstate'
 
-# steps:
-# - task: TerraformTaskV1@0
-#   inputs:
-#     provider: 'azurerm'
-#     command: 'init'
-#     backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
-#     backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
-#     backendAzureRmStorageAccountName: 'terraformtfstateskip'
-#     backendAzureRmContainerName: 'tfstate'
-#     backendAzureRmKey: 'testtt.tfstate'
 
 
