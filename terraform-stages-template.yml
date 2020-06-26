@@ -53,7 +53,7 @@ stages:
         workingDirectory: ${{ parameters.workingDirectory }}
         targetType: 'inline'
         script: |
-          $plan = $(terraform show -json tfplan | ConvertFrom-Json)
+          $plan = $(terraform show -json ${{ parameters.backendAzureRmKey }} | ConvertFrom-Json)
           $actions = $plan.resource_changes.change.actions
           Write-Host "Terraform actions : $actions"
           if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
