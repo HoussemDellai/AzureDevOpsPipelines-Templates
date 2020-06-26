@@ -1,11 +1,12 @@
 parameters:
   environment: stage
   environmentDisplayName: Staging
-  subscription: Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)
-  resourceGroup: resourcegroup-tfstate
-  storageAccount: terraformtfstateskip
-  container: tfstate
-  tfstateFile: stage.tfstate
+  backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+  backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+  backendAzureRmStorageAccountName: 'terraformtfstateskip'
+  backendAzureRmContainerName: 'tfstate'
+  backendAzureRmKey: 'testtt.tfstate'
+  workingDirectory: 'terraform'
   anyTfChanges: false
 
 stages:
@@ -30,30 +31,28 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-        backendServiceArm: '$(subscription)'
-        backendAzureRmResourceGroupName: '$(resourceGroup)'
-        backendAzureRmStorageAccountName: '$(storageAccount)'
-        backendAzureRmContainerName: '$(container)'
-        backendAzureRmKey: '$(tfstateFile)'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        backendServiceArm: ${{ parameters.backendServiceArm }}
+        backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+        backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+        backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+        backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
     
     - task: TerraformTaskV1@0
       displayName: terraform plan -out=tfplan
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-        commandOptions: '-out=tfplan'
-        # commandOptions: '-detailed-exitcode -out=tfplan'
-        environmentServiceNameAzureRM: '$(subscription)'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        commandOptions: '-out=${{ parameters.backendAzureRmKey }}'
+        environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
     
     - task: PowerShell@2
       displayName: detect any terraform change
       inputs:
-        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+        workingDirectory: ${{ parameters.workingDirectory }}
         targetType: 'inline'
         script: |
-          # Write-Host "LASTEXITCODE : $LASTEXITCODE"
           $plan = $(terraform show -json tfplan | ConvertFrom-Json)
           $actions = $plan.resource_changes.change.actions
           Write-Host "Terraform actions : $actions"
@@ -73,6 +72,6 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
-        commandOptions: 'tfplan'
-        environmentServiceNameAzureRM: '$(subscription)'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        commandOptions: ${{ parameters.backendAzureRmKey }}
+        environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
