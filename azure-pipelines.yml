@@ -11,12 +11,17 @@ stages:
   parameters:
     environment: stage
     environmentDisplayName: Staging
+    backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+    backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+    backendAzureRmStorageAccountName: 'terraformtfstateskip'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'test123.tfstate'
 
 - template: terraform-stages-template.yml
   parameters:
     environment: qa
     environmentDisplayName: QA
-    
+
 # steps:
 # - task: TerraformTaskV1@0
 #   inputs:
