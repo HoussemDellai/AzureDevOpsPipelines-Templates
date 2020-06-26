@@ -9,11 +9,13 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- template: terraform-stages-template.yml
+  parameters:
+    environment: stage
+    environmentDisplayName: Staging
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- template: terraform-stages-template.yml
+  parameters:
+    environment: qa
+    environmentDisplayName: QA
