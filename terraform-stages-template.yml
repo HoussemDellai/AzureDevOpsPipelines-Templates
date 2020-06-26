@@ -1,0 +1,79 @@
+parameters:
+  environment: stage
+  environmentDisplayName: Staging
+
+variables:
+  subscription: Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)
+  resourceGroup: resourcegroup-tfstate
+  storageAccount: terraformtfstateskip
+  container: tfstate
+  tfstateFile: terraform.tfstate
+  anyTfChanges: false
+
+stages:
+- stage: Terraform_Plan_${{ parameters.environment }}
+  displayName: Plan ${{ parameters.environmentDisplayName }}
+  jobs:
+  - job: Terraform_Plan
+    displayName: Plan Terraform
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    
+    - task: TerraformInstaller@0
+      displayName: install Terraform v0.12.28
+      inputs:
+        terraformVersion: '0.12.28'
+    
+    - task: TerraformTaskV1@0
+      displayName: terraform init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+        backendServiceArm: '$(subscription)'
+        backendAzureRmResourceGroupName: '$(resourceGroup)'
+        backendAzureRmStorageAccountName: '$(storageAccount)'
+        backendAzureRmContainerName: '$(container)'
+        backendAzureRmKey: '$(tfstateFile)'
+    
+    - task: TerraformTaskV1@0
+      displayName: terraform plan -out=tfplan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+        commandOptions: '-out=tfplan'
+        # commandOptions: '-detailed-exitcode -out=tfplan'
+        environmentServiceNameAzureRM: '$(subscription)'
+    
+    - task: PowerShell@2
+      displayName: detect any terraform change
+      inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+        targetType: 'inline'
+        script: |
+          # Write-Host "LASTEXITCODE : $LASTEXITCODE"
+          $plan = $(terraform show -json tfplan | ConvertFrom-Json)
+          $actions = $plan.resource_changes.change.actions
+          Write-Host "Terraform actions : $actions"
+          if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
+          {
+            Write-Host "Terraform will perform the following actions : $actions"
+            Write-Host "##vso[task.setvariable variable=anyTfChanges;]true"
+          }
+          else
+          {
+            Write-Host "There is no change detected in Terraform tfplan file"
+          }
+    
+    - task: TerraformTaskV1@0
+      displayName: terraform apply tfplan
+      condition: eq(variables.anyTfChanges, true)
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/skip-step'
+        commandOptions: 'tfplan'
+        environmentServiceNameAzureRM: '$(subscription)'
