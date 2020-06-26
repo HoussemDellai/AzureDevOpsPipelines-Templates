@@ -5,10 +5,11 @@ parameters:
   resourceGroup: resourcegroup-tfstate
   storageAccount: terraformtfstateskip
   container: tfstate
-  tfstateFile: ${{ parameters.environment }}.tfstate
+  tfstateFile: stage.tfstate
   anyTfChanges: false
 
 stages:
+
 - stage: Terraform_Plan_${{ parameters.environment }}
   displayName: Plan ${{ parameters.environmentDisplayName }}
   jobs:
