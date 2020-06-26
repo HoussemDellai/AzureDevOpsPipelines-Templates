@@ -7,7 +7,7 @@ variables:
   resourceGroup: resourcegroup-tfstate
   storageAccount: terraformtfstateskip
   container: tfstate
-  tfstateFile: terraform.tfstate
+  tfstateFile: ${{ parameters.environment }}.tfstate
   anyTfChanges: false
 
 stages:
