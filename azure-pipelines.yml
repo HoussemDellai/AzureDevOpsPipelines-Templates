@@ -7,7 +7,6 @@ trigger:
 - master
 
 steps:
-  - 
 - task: TerraformTaskV1@0
   inputs:
     provider: 'azurerm'
