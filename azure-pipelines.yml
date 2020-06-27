@@ -9,15 +9,15 @@ variables:
   location: 'westeurope'
 
 stages:
-- template: create-terraform-backend-template.yml
+- template: template-create-terraform-backend.yml
 
-- template: terraform-stages-template.yml
+- template: template-terraform-stages.yml
   parameters:
     environment: stage
     environmentDisplayName: Staging
     backendAzureRmKey: 'staging.tfstate'
 
-- template: terraform-stages-template.yml
+- template: template-terraform-stages.yml
   parameters:
     environment: qa
     environmentDisplayName: QA
