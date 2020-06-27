@@ -1,0 +1,1 @@
+resource-group-name=__RESOURCE_GROUP_NAME__
