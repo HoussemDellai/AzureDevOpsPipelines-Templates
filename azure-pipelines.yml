@@ -11,31 +11,52 @@ variables:
   devEnvironment: dev
   testEnvironment: test
   prodEnvironment: prod
+  tfWorkingDirectory: 'terraform'
 
 stages:
 - template: template-create-terraform-backend.yml
   parameters:
     environment: ${{ variables.tfBackendEnvironment }}
     environmentDisplayName: Create TF Backend
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+    location: ${{ variables.location }}
     dependsOn: []
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.devEnvironment }}
     environmentDisplayName: Development
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
     backendAzureRmKey: $(devEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
     dependsOn: ['${{ variables.tfBackendEnvironment }}']
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.testEnvironment }}
     environmentDisplayName: Test
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
     backendAzureRmKey: $(testEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
     dependsOn: ['${{ variables.tfBackendEnvironment }}']
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
     backendAzureRmKey: $(prodEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
     dependsOn: ['${{ variables.tfBackendEnvironment }}', '${{ variables.devEnvironment }}', '${{ variables.testEnvironment }}']
