@@ -1,13 +1,13 @@
 parameters:
   environment: terraform_backend_tfstate
-  environmentDisplayName: Development
+  environmentDisplayName: Terraform Backend
   
 stages:
 
 - stage: ${{ parameters.environment }}
   displayName: ${{ parameters.environmentDisplayName }}
   jobs:
-  - job: Terraform_Create_Backend
+  - job: Create_TF_Backend
     displayName: Create Terraform Backend to Save State
     pool:
       vmImage: ubuntu-latest
