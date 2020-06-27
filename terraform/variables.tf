@@ -4,6 +4,6 @@ variable "environment" {
 }
 
 variable "resource-group-name" {
-  default = "resource-group-dev"
+  default = "resourcegroup-dev"
   description = "The Resource Group name to be deployed"
 }
