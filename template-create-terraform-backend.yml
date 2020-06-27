@@ -1,3 +1,7 @@
+parameters:
+  environment: terraform_backend_tfstate
+  environmentDisplayName: Development
+  
 stages:
 
 - stage: Terraform_Backend
