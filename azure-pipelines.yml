@@ -35,4 +35,4 @@ stages:
     environment: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
     backendAzureRmKey: $(prodEnvironment).tfstate
-    dependsOn: [Terraform_Backend, Terraform_$(devEnvironment), Terraform_$(testEnvironment)]
+    dependsOn: [Terraform_Backend, Terraform_dev, Terraform_test]
