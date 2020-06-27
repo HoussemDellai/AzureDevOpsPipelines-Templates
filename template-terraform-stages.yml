@@ -1,9 +1,9 @@
 parameters:
-  environment: stage
-  environmentDisplayName: Staging
+  environment: dev
+  environmentDisplayName: Development
   backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
   backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
-  backendAzureRmStorageAccountName: 'terraformtfstateskip'
+  backendAzureRmStorageAccountName: 'terraformtfstate'
   backendAzureRmContainerName: 'tfstate'
   backendAzureRmKey: 'dev.tfstate'
   workingDirectory: 'terraform'
@@ -12,7 +12,7 @@ parameters:
 
 stages:
 
-- stage: Terraform_${{ parameters.environment }}
+- stage: ${{ parameters.environment }}
   displayName: Release ${{ parameters.environmentDisplayName }}
   dependsOn: ${{ parameters.dependsOn  }}
   jobs:
