@@ -28,7 +28,7 @@ stages:
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.devEnvironment }}
-    environmentDisplayName: Development
+    environmentDisplayName: Dev
     backendServiceArm: ${{ variables.backendServiceArm }}
     backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
     backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
