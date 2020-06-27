@@ -37,4 +37,4 @@ stages:
     environment: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
     backendAzureRmKey: $(prodEnvironment).tfstate
-    dependsOn: [$(tfInitBackend), '${{ variables.devEnvironment }}', '${{ variables.testEnvironment }}']
+    dependsOn: ['$(tfInitBackend)', '${{ variables.devEnvironment }}', '${{ variables.testEnvironment }}']
