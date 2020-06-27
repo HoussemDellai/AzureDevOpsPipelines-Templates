@@ -18,7 +18,7 @@ stages:
 # stage named Terraform_${{ parameters.devEnvironment }}
 - template: template-terraform-stages.yml
   parameters:
-    environment: dev
+    environment: ${{ variables.devEnvironment }}
     environmentDisplayName: Development
     backendAzureRmKey: $(devEnvironment).tfstate
     dependsOn: [Terraform_Backend]
