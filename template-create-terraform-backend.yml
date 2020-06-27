@@ -29,8 +29,8 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           # Create the resource group
-          az group create 
-             -n ${{ parameters.backendAzureRmResourceGroupName }} 
+          az group create \
+             -n ${{ parameters.backendAzureRmResourceGroupName }} \
              -l ${{ parameters.location }}
            
           echo "Resource group ${{ parameters.backendAzureRmResourceGroupName }} created."
