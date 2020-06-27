@@ -13,7 +13,7 @@ parameters:
 stages:
 
 - stage: ${{ parameters.environment }}
-  displayName: Release ${{ parameters.environmentDisplayName }}
+  displayName: Deploy to ${{ parameters.environmentDisplayName }}
   dependsOn: ${{ parameters.dependsOn  }}
   jobs:
   - job: Terraform_Plan
