@@ -46,10 +46,7 @@ stages:
           echo "Storage account ${{ parameters.backendAzureRmStorageAccountName }} created."
            
           # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list \
-                           --resource-group ${{ parameters.backendAzureRmResourceGroupName }} \ 
-                           --account-name ${{ parameters.backendAzureRmStorageAccountName }} \
-                           --query [0].value -o tsv)
+          ACCOUNT_KEY=$(az storage account keys list --resource-group ${{ parameters.backendAzureRmResourceGroupName }} --account-name ${{ parameters.backendAzureRmStorageAccountName }} --query [0].value -o tsv)
            
           echo "Storage account key retrieved."
            
