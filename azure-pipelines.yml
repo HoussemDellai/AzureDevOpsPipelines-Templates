@@ -7,7 +7,7 @@ variables:
   backendAzureRmStorageAccountName: 'terraformtfstateskip'
   backendAzureRmContainerName: 'tfstate'
   location: 'westeurope'
-  tfBackendEnvironment: terraform_backend_tfstate
+  tfBackendEnvironment: tf_backend
   devEnvironment: dev
   testEnvironment: test
   prodEnvironment: prod
