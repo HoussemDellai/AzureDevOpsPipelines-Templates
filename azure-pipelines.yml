@@ -3,7 +3,7 @@ trigger:
 
 variables:
   backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
-  backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+  backendAzureRmResourceGroupName: 'resourcegroup-devops-tfstate'
   backendAzureRmStorageAccountName: 'terraform0tfstate0'
   backendAzureRmContainerName: 'tfstate'
   location: 'westeurope'
@@ -28,7 +28,7 @@ stages:
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.devEnvironment }}
-    environmentDisplayName: Development
+    environmentDisplayName: Dev
     backendServiceArm: ${{ variables.backendServiceArm }}
     backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
     backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
