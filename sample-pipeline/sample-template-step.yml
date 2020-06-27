@@ -1,0 +1,3 @@
+steps:
+    
+  - script: echo "Hello from YAML Templates in Azure DevOps Pipelines"

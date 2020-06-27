@@ -1,0 +1,11 @@
+trigger:
+- master
+
+steps:
+
+- template: sample-pipelines/sample-template-step.yml
+
+- template: sample-pipelines/sample-template-step.yml
+
+- template: sample-pipelines/sample-template-step.yml
+   
