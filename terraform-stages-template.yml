@@ -5,7 +5,7 @@ parameters:
   backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
   backendAzureRmStorageAccountName: 'terraformtfstateskip'
   backendAzureRmContainerName: 'tfstate'
-  backendAzureRmKey: 'testtt.tfstate'
+  backendAzureRmKey: 'dev.tfstate'
   workingDirectory: 'terraform'
   anyTfChanges: false
 
@@ -44,7 +44,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: ${{ parameters.workingDirectory }}
-        commandOptions: '-out=${{ parameters.backendAzureRmKey }}'
+        commandOptions: '-out=${{ parameters.backendAzureRmKey }} environment=${{ parameters.environment }}'
         environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
     
     - task: PowerShell@2
