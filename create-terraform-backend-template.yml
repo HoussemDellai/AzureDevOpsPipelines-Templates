@@ -1,0 +1,40 @@
+stages:
+
+- stage: Terraform_Plan_${{ parameters.environment }}
+  displayName: Plan ${{ parameters.environmentDisplayName }}
+  jobs:
+  - job: Terraform_Create_Backend
+    displayName: Create Terraform Backend to Save State
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    - task: AzureCLI@2
+      displayName: Create Storage Container for tfstate
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Create the resource group
+          az group create -n $(backendAzureRmResourceGroupName) -l $(location)
+           
+          echo "Resource group $(backendAzureRmResourceGroupName) created."
+           
+          # Create the storage account
+          az storage account create -g $(backendAzureRmResourceGroupName) -l $(location) \
+            --name $(backendAzureRmStorageAccountName) \
+            --sku Standard_LRS \
+            --encryption-services blob
+           
+          echo "Storage account $(backendAzureRmStorageAccountName) created."
+           
+          # Retrieve the storage account key
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $(backendAzureRmResourceGroupName) --account-name $(backendAzureRmStorageAccountName) --query [0].value -o tsv)
+           
+          echo "Storage account key retrieved."
+           
+          # Create a storage container (for the Terraform State)
+          az storage container create --name $(backendAzureRmContainerName) --account-name $(backendAzureRmStorageAccountName) --account-key $ACCOUNT_KEY
+           
+          echo "Storage container $(backendAzureRmContainerName) created."
