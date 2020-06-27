@@ -25,14 +25,14 @@ stages:
 
 - template: template-terraform-stages.yml
   parameters:
-    environment: $(testEnvironment)
+    environment: ${{ variables.testEnvironment }}
     environmentDisplayName: Test
     backendAzureRmKey: $(devEnvironment).tfstate
     dependsOn: [Terraform_Backend]
 
 - template: template-terraform-stages.yml
   parameters:
-    environment: $(prodEnvironment)
+    environment: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
     backendAzureRmKey: $(devEnvironment).tfstate
     # dependsOn: [Terraform_Backend, Terraform_$(devEnvironment), Terraform_$(testEnvironment)]
