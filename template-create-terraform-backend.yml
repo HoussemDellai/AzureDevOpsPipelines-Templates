@@ -1,16 +1,19 @@
+# parameters values will be passed from the main/parent yaml template.
 parameters:
   environment: terraform_backend_tfstate
   environmentDisplayName: Terraform Backend
-  backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+  backendServiceArm: ''
   backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
   backendAzureRmStorageAccountName: 'terraformtfstate'
   backendAzureRmContainerName: 'tfstate'
   location: 'westeurope'
+  dependsOn: []
   
 stages:
 
 - stage: ${{ parameters.environment }}
   displayName: ${{ parameters.environmentDisplayName }}
+  dependsOn: []
   jobs:
   - job: Create_TF_Backend
     displayName: TF Backend to save State
@@ -21,7 +24,7 @@ stages:
     - task: AzureCLI@2
       displayName: Create Storage Container for tfstate
       inputs:
-        azureSubscription: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+        azureSubscription: ${{ parameters.backendServiceArm }}
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
