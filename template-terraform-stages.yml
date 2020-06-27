@@ -12,7 +12,7 @@ parameters:
 stages:
 
 - stage: Terraform_${{ parameters.environment }}
-  displayName: ${{ parameters.environmentDisplayName }}
+  displayName: Release ${{ parameters.environmentDisplayName }}
   jobs:
   - job: Terraform_Plan
     displayName: Terraform Init, Plan & Apply
