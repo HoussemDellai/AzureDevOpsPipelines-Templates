@@ -54,7 +54,7 @@ stages:
           echo "Storage account key retrieved."
            
           # Create a storage container (for the Terraform State)
-          az storage container create 
+          az storage container create \
              --name ${{ parameters.backendAzureRmContainerName }} \
              --account-name ${{ parameters.backendAzureRmStorageAccountName }} \
              --account-key $ACCOUNT_KEY
