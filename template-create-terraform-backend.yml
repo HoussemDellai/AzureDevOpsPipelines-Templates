@@ -1,6 +1,11 @@
 parameters:
   environment: terraform_backend_tfstate
   environmentDisplayName: Terraform Backend
+  backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+  backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+  backendAzureRmStorageAccountName: 'terraformtfstate'
+  backendAzureRmContainerName: 'tfstate'
+  location: 'westeurope'
   
 stages:
 
