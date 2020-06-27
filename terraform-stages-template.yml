@@ -39,7 +39,7 @@ stages:
         backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
     
     - task: TerraformTaskV1@0
-      displayName: terraform plan -out=tfplan
+      displayName: terraform plan -var environment=${{ parameters.environment }} -out=${{ parameters.backendAzureRmKey }}
       inputs:
         provider: 'azurerm'
         command: 'plan'
@@ -48,7 +48,7 @@ stages:
         environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
     
     - task: PowerShell@2
-      displayName: detect any terraform change
+      displayName: detect any terraform change in the plan
       inputs:
         workingDirectory: ${{ parameters.workingDirectory }}
         targetType: 'inline'
@@ -67,7 +67,7 @@ stages:
           }
     
     - task: TerraformTaskV1@0
-      displayName: terraform apply tfplan
+      displayName: terraform apply ${{ parameters.backendAzureRmKey }}
       condition: eq(variables.anyTfChanges, true)
       inputs:
         provider: 'azurerm'
