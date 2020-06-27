@@ -10,6 +10,7 @@ variables:
 
 stages:
 - template: template-create-terraform-backend.yml
+  
 
 - template: template-terraform-stages.yml
   parameters:
@@ -18,6 +19,7 @@ stages:
     backendAzureRmKey: 'dev.tfstate'
 
 - template: template-terraform-stages.yml
+  dependsOn: Terraform_Backend
   parameters:
     environment: test
     environmentDisplayName: Test
