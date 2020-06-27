@@ -5,7 +5,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = ${var.resource-group-name}-${var.environment}
+  name     = "${var.resource-group-name}-${var.environment}"
   location = "westeurope"
   
   tags = {
