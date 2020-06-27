@@ -39,7 +39,7 @@ stages:
           az storage account create \
             -g ${{ parameters.backendAzureRmResourceGroupName }} \
             -l ${{ parameters.location }} \
-            --name ${{ parameters.environment.backendAzureRmStorageAccountName }} \
+            --name ${{ parameters.backendAzureRmStorageAccountName }} \
             --sku Standard_LRS \
             --encryption-services blob
            
