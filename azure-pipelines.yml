@@ -7,25 +7,32 @@ variables:
   backendAzureRmStorageAccountName: 'terraformtfstateskip'
   backendAzureRmContainerName: 'tfstate'
   location: 'westeurope'
+  devEnvironment: dev
+  testEnvironment: test
+  prodEnvironment: prod
 
 stages:
+# stage named Terraform_Backend
 - template: template-create-terraform-backend.yml
 
+# stage named Terraform_${{ parameters.devEnvironment }}
 - template: template-terraform-stages.yml
   parameters:
-    environment: dev
+    environment: $(devEnvironment)
     environmentDisplayName: Development
-    backendAzureRmKey: 'dev.tfstate'
-
-- template: template-terraform-stages.yml
-  parameters:
-    environment: test
-    environmentDisplayName: Test
-    backendAzureRmKey: 'test.tfstate'
+    backendAzureRmKey: $(devEnvironment).tfstate
     dependsOn: [Terraform_Backend]
 
 - template: template-terraform-stages.yml
   parameters:
-    environment: prod
+    environment: $(testEnvironment)
+    environmentDisplayName: Test
+    backendAzureRmKey: $(devEnvironment).tfstate
+    dependsOn: [Terraform_Backend]
+
+- template: template-terraform-stages.yml
+  parameters:
+    environment: $(prodEnvironment)
     environmentDisplayName: Production
-    backendAzureRmKey: 'prod.tfstate'
+    backendAzureRmKey: $(devEnvironment).tfstate
+    dependsOn: [Terraform_Backend, Terraform_$(devEnvironment), Terraform_$(testEnvironment)]
