@@ -8,11 +8,13 @@ parameters:
   backendAzureRmKey: 'dev.tfstate'
   workingDirectory: 'terraform'
   anyTfChanges: false
+  dependsOn: []
 
 stages:
 
 - stage: Terraform_${{ parameters.environment }}
   displayName: Release ${{ parameters.environmentDisplayName }}
+  dependsOn: ${{ parameters.dependsOn  }}
   jobs:
   - job: Terraform_Plan
     displayName: Terraform Init, Plan & Apply
