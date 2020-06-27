@@ -13,7 +13,7 @@ stages:
   displayName: ${{ parameters.environmentDisplayName }}
   jobs:
   - job: Create_TF_Backend
-    displayName: Create Terraform Backend to Save State
+    displayName: TF Backend to save State
     pool:
       vmImage: ubuntu-latest
 
@@ -26,24 +26,34 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           # Create the resource group
-          az group create -n $(backendAzureRmResourceGroupName) -l $(location)
+          az group create 
+             -n ${{ parameters.backendAzureRmResourceGroupName }} 
+             -l ${{ parameters.location }}
            
-          echo "Resource group $(backendAzureRmResourceGroupName) created."
+          echo "Resource group ${{ parameters.backendAzureRmResourceGroupName }} created."
            
           # Create the storage account
-          az storage account create -g $(backendAzureRmResourceGroupName) -l $(location) \
-            --name $(backendAzureRmStorageAccountName) \
+          az storage account create 
+            -g ${{ parameters.backendAzureRmResourceGroupName }} 
+            -l ${{ parameters.location }} \
+            --name ${{ parameters.environment.backendAzureRmStorageAccountName }} \
             --sku Standard_LRS \
             --encryption-services blob
            
-          echo "Storage account $(backendAzureRmStorageAccountName) created."
+          echo "Storage account ${{ parameters.backendAzureRmStorageAccountName }} created."
            
           # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list --resource-group $(backendAzureRmResourceGroupName) --account-name $(backendAzureRmStorageAccountName) --query [0].value -o tsv)
+          ACCOUNT_KEY=$(az storage account keys list 
+                           --resource-group ${{ parameters.backendAzureRmResourceGroupName }} \ 
+                           --account-name ${{ parameters.backendAzureRmStorageAccountName }} \
+                           --query [0].value -o tsv)
            
           echo "Storage account key retrieved."
            
           # Create a storage container (for the Terraform State)
-          az storage container create --name $(backendAzureRmContainerName) --account-name $(backendAzureRmStorageAccountName) --account-key $ACCOUNT_KEY
+          az storage container create 
+             --name ${{ parameters.backendAzureRmContainerName }} \
+             --account-name ${{ parameters.backendAzureRmStorageAccountName }} \
+             --account-key $ACCOUNT_KEY
            
-          echo "Storage container $(backendAzureRmContainerName) created."
+          echo "Storage container ${{ parameters.backendAzureRmContainerName }} created."
