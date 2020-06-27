@@ -4,7 +4,7 @@ trigger:
 variables:
   backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
   backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
-  backendAzureRmStorageAccountName: 'terraformtfstateskip'
+  backendAzureRmStorageAccountName: 'terraformtfstate'
   backendAzureRmContainerName: 'tfstate'
   location: 'westeurope'
   tfBackendEnvironment: tf_backend
@@ -16,7 +16,7 @@ stages:
 - template: template-create-terraform-backend.yml
   parameters:
     environment: ${{ variables.tfBackendEnvironment }}
-    environmentDisplayName: Create Terraform Backend
+    environmentDisplayName: Create TF Backend
     dependsOn: []
 
 - template: template-terraform-stages.yml
