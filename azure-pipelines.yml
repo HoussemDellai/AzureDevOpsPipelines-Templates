@@ -13,29 +13,28 @@ variables:
   prodEnvironment: prod
 
 stages:
-# stage named Terraform_Backend
 - template: template-create-terraform-backend.yml
   parameters:
     environment: $(tfInitBackend)
-    environmentDisplayName: Create Terraform Backend to Save State
+    environmentDisplayName: Create Terraform Backend
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.devEnvironment }}
     environmentDisplayName: Development
     backendAzureRmKey: $(devEnvironment).tfstate
-    dependsOn: [Terraform_Backend]
+    dependsOn: [$(tfInitBackend)]
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.testEnvironment }}
     environmentDisplayName: Test
     backendAzureRmKey: $(testEnvironment).tfstate
-    dependsOn: [Terraform_Backend]
+    dependsOn: [$(tfInitBackend)]
 
 - template: template-terraform-stages.yml
   parameters:
     environment: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
     backendAzureRmKey: $(prodEnvironment).tfstate
-    dependsOn: [Terraform_Backend, '${{ variables.devEnvironment }}', '${{ variables.testEnvironment }}']
+    dependsOn: [$(tfInitBackend), '${{ variables.devEnvironment }}', '${{ variables.testEnvironment }}']
