@@ -4,6 +4,6 @@ variable "environment" {
 }
 
 variable "resource-group-name" {
-  default = "terraform-resource-group-test-tbd"
+  default = "resource-group-dev"
   description = "The Resource Group name to be deployed"
 }
