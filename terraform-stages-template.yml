@@ -44,7 +44,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: ${{ parameters.workingDirectory }}
-        commandOptions: '-out=${{ parameters.backendAzureRmKey }} environment=${{ parameters.environment }}'
+        commandOptions: '-var environment=${{ parameters.environment }} -out=${{ parameters.backendAzureRmKey }}'
         environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
     
     - task: PowerShell@2
