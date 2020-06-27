@@ -11,11 +11,11 @@ parameters:
 
 stages:
 
-- stage: Terraform_Plan_${{ parameters.environment }}
-  displayName: Plan ${{ parameters.environmentDisplayName }}
+- stage: Terraform_${{ parameters.environment }}
+  displayName: ${{ parameters.environmentDisplayName }}
   jobs:
   - job: Terraform_Plan
-    displayName: Plan Terraform
+    displayName: Terraform Init, Plan & Apply
     pool:
       vmImage: ubuntu-latest
 
@@ -27,7 +27,7 @@ stages:
         terraformVersion: '0.12.28'
     
     - task: TerraformTaskV1@0
-      displayName: terraform init
+      displayName: terraform init with Azure backend
       inputs:
         provider: 'azurerm'
         command: 'init'
