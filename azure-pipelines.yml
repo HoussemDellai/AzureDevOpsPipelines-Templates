@@ -23,14 +23,14 @@ stages:
     environment: $(devEnvironment)
     environmentDisplayName: Development
     backendAzureRmKey: $(devEnvironment).tfstate
-    dependsOn: [$(tfInitBackend)]
+    dependsOn: [$(tfBackendEnvironment)]
 
 - template: template-terraform-stages.yml
   parameters:
     environment: $(testEnvironment)
     environmentDisplayName: Test
     backendAzureRmKey: $(testEnvironment).tfstate
-    dependsOn: [$(tfInitBackend)]
+    dependsOn: [$(tfBackendEnvironment)]
 
 - template: template-terraform-stages.yml
   parameters:
