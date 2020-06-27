@@ -36,8 +36,8 @@ stages:
           echo "Resource group ${{ parameters.backendAzureRmResourceGroupName }} created."
            
           # Create the storage account
-          az storage account create 
-            -g ${{ parameters.backendAzureRmResourceGroupName }} 
+          az storage account create \
+            -g ${{ parameters.backendAzureRmResourceGroupName }} \
             -l ${{ parameters.location }} \
             --name ${{ parameters.environment.backendAzureRmStorageAccountName }} \
             --sku Standard_LRS \
@@ -46,7 +46,7 @@ stages:
           echo "Storage account ${{ parameters.backendAzureRmStorageAccountName }} created."
            
           # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list 
+          ACCOUNT_KEY=$(az storage account keys list \
                            --resource-group ${{ parameters.backendAzureRmResourceGroupName }} \ 
                            --account-name ${{ parameters.backendAzureRmStorageAccountName }} \
                            --query [0].value -o tsv)
