@@ -1,7 +1,7 @@
 stages:
 
-- stage: Terraform_Plan_${{ parameters.environment }}
-  displayName: TF Backend
+- stage: Terraform_Backend
+  displayName: Init TF Backend
   jobs:
   - job: Terraform_Create_Backend
     displayName: Create Terraform Backend to Save State
