@@ -24,7 +24,7 @@ stages:
 
     steps:
     
-    - task: TerraformInstaller@0.12.28
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: install Terraform v0.12.28
       inputs:
         terraformVersion: '0.12.28'
