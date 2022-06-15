@@ -3,6 +3,12 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+on:
+  pull_request:
+    paths-ignore:
+      - 'scripts/**'
+      - 'middleware/**'
+      
 trigger:
 - main
 
