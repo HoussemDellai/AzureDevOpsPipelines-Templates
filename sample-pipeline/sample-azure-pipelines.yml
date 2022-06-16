@@ -1,6 +1,11 @@
 trigger:
 - master
 
+pr:
+  branches:
+    include:
+      - "*"  
+
 steps:
 
 - template: sample-template-step.yml
